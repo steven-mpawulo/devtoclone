@@ -33,6 +33,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Skill> skills;
     @OneToMany(mappedBy = "user")
+    private List<Learning> learningList;
+    @OneToMany(mappedBy = "user")
     private List<Badge> badges;
     @OneToMany(mappedBy = "user")
     private List<Organization> organizations;
