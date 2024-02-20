@@ -26,13 +26,14 @@ public class User {
     private String work;
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
-
     @OneToMany(mappedBy = "user")
     private List<SocialUrl> socialUrls;
     @OneToMany(mappedBy = "user")
     private List<Skill> skills;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Badge> badges;
+    @OneToMany(mappedBy = "user")
+    private List<Organization> organizations;
     @CreationTimestamp
     private Date createdOn;
 
