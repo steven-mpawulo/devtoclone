@@ -5,10 +5,7 @@ import com.example.devtoclone.models.User;
 import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +29,11 @@ public class UserController {
         } else {
             throw new NoUserFoundException(HttpStatus.NOT_FOUND, "user with provided id not found");
         }
+    }
+
+    @PostMapping("/users")
+    public User addUser(@RequestBody User user) {
+        return userRepository.save(user);
     }
 
 }
