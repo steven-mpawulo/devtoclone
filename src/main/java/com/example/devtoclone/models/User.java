@@ -29,8 +29,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<SocialUrl> socialUrls;
-
-
+    @OneToMany(mappedBy = "user")
+    private List<Skill> skills;
+    @OneToMany
+    private List<Badge> badges;
     @CreationTimestamp
     private Date createdOn;
 

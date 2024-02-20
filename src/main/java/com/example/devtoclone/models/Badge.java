@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Skill {
+public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
