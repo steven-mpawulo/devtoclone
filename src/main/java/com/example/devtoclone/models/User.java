@@ -26,6 +26,8 @@ public class User {
     private String work;
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
+    @ManyToMany
+    private List<Follower> followers;
     @OneToMany(mappedBy = "user")
     private List<SocialUrl> socialUrls;
     @OneToMany(mappedBy = "user")
