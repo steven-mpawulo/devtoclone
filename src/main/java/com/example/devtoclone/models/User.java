@@ -44,6 +44,15 @@ public class User {
     private List<Comment> comments;
     @CreationTimestamp
     private Date createdOn;
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @UpdateTimestamp
     private Date updatedOn;
 
