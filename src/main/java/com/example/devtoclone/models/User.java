@@ -26,19 +26,19 @@ public class User {
     private String education;
     private String briefDescription;
     private String work;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Article> articles;
     @OneToMany
     private List<Follower> followers;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<SocialUrl> socialUrls;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Skill> skills;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Learning> learningList;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Badge> badges;
-    @OneToMany(mappedBy = "user")
+    @OneToMany
     private List<Organization> organizations;
     @OneToMany
     private List<Comment> comments;
