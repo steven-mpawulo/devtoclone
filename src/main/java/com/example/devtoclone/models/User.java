@@ -40,6 +40,8 @@ public class User {
     private List<Badge> badges;
     @OneToMany(mappedBy = "user")
     private List<Organization> organizations;
+    @OneToMany
+    private List<Comment> comments;
     @CreationTimestamp
     private Date createdOn;
     @UpdateTimestamp
