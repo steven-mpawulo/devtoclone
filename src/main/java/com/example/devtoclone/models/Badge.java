@@ -9,13 +9,26 @@ public class Badge {
     private Long id;
     @ManyToOne
     private User user;
+    protected Badge() {}
+
+    public Badge(User user, String content) {
+        this.user = user;
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Column(nullable = false)
+    private String content;
 
     public Long getId() {
         return id;
-    }
-    protected Badge() {}
-    public Badge(User user) {
-        this.user = user;
     }
 
     public void setId(Long id) {
