@@ -3,6 +3,7 @@ package com.example.devtoclone.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(schema = "public")
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

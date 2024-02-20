@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(schema = "public")
 public class Follower {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
