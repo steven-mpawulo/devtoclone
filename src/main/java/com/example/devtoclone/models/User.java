@@ -26,6 +26,7 @@ public class User {
     private String work;
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
+    private List<SocialUrl> socialUrls;
 
 
     @CreationTimestamp
