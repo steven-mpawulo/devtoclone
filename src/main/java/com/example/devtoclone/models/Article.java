@@ -49,6 +49,9 @@ public class Article {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Reaction> reactions;
+
     public Long getId() {
         return id;
     }
@@ -137,6 +140,5 @@ public class Article {
         this.reactions = reactions;
     }
 
-    @OneToMany
-    private List<Reaction> reactions;
+
 }

@@ -1,5 +1,6 @@
 package com.example.devtoclone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +18,8 @@ public class Reaction {
         this.content = content;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Article article;
 
     private String content;

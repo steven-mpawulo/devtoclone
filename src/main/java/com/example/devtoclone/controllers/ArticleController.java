@@ -5,6 +5,7 @@ import com.example.devtoclone.exception.NoArticleFoundException;
 import com.example.devtoclone.exception.NoUserFoundException;
 import com.example.devtoclone.models.Article;
 import com.example.devtoclone.models.Comment;
+import com.example.devtoclone.models.Reaction;
 import com.example.devtoclone.models.User;
 import com.example.devtoclone.repositories.ArticleRepository;
 import com.example.devtoclone.repositories.UserRepository;
@@ -95,5 +96,22 @@ public class ArticleController {
         } else {
             throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "no article found to update");
         }
+    }
+
+    @PutMapping("/articles/{articleId}/reaction")
+    public Article reactToArticle(@PathVariable Long articleId, @RequestBody Map<String, Object> jsonData) {
+        Optional<Article> article = articleRepository.findById(articleId);
+
+        if (article.isPresent()) {
+            Article actualArticle = article.get();
+            List<Reaction> reactions = actualArticle.getReactions();
+            String content = (String) jsonData.get("content");
+            Reaction reaction = new Reaction(actualArticle, content);
+            reactions.add(reaction);
+            return articleRepository.save(actualArticle);
+        } else {
+            throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to react on article because article with provided id not found");
+        }
+
     }
 }
