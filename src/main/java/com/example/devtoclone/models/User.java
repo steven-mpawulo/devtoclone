@@ -42,7 +42,7 @@ public class User {
     private List<Badge> badges;
     @OneToMany
     private List<Organization> organizations;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
     @CreationTimestamp
     private Date createdOn;

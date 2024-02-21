@@ -2,13 +2,14 @@ package com.example.devtoclone.controllers;
 
 import com.example.devtoclone.exception.FailedToCreateArticleException;
 import com.example.devtoclone.exception.NoArticleFoundException;
+import com.example.devtoclone.exception.NoUserFoundException;
 import com.example.devtoclone.models.Article;
+import com.example.devtoclone.models.Comment;
 import com.example.devtoclone.models.User;
 import com.example.devtoclone.repositories.ArticleRepository;
 import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,8 +67,33 @@ public class ArticleController {
         } else {
             throw new FailedToCreateArticleException(HttpStatus.FAILED_DEPENDENCY, "no user found to create article");
         }
+    }
+
+    @PutMapping("/articles/{articleId}/comment")
+    public Article commentOnArticle(@PathVariable Long articleId, @RequestBody Map<String, Object> jsonData) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        if (article.isPresent()) {
+            Article actualArticle = article.get();
+            String content = (String) jsonData.get("content");
+            int userIdInt = (int) jsonData.get("userId");
+            Long userId = (long) userIdInt;
+            Optional<User> userAddingComment = userRepository.findById(userId);
+            if (userAddingComment.isPresent()) {
+                User user = userAddingComment.get();
+                List<Comment> articleComments = actualArticle.getComments();
+                Comment comment = new Comment(user, actualArticle, content);
+                articleComments.add(comment);
+                List<Comment> userComments = user.getComments();
+                userComments.add(comment);
+                userRepository.save(user);
+                return articleRepository.save(actualArticle);
+            } else {
+                throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add comment because no user with provided id is found");
+            }
 
 
-
+        } else {
+            throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "no article found to update");
+        }
     }
 }

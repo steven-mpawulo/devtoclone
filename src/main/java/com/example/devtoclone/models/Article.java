@@ -46,7 +46,7 @@ public class Article {
     @ManyToOne
     @JsonIgnore
     private User user;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Long getId() {
