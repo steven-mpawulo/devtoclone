@@ -27,6 +27,7 @@ public class User {
     private String education;
     private String briefDescription;
     private String work;
+
     @OneToMany
     private List<Article> articles;
     @OneToMany
