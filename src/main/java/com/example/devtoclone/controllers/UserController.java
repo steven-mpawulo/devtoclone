@@ -36,4 +36,19 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @PutMapping("/users/{userId}")
+    public User updateUser(@PathVariable Long userId, @RequestBody User user) {
+       Optional<User> oldUser = userRepository.findById(userId);
+
+       if (oldUser.isPresent()) {
+           User actualUser = oldUser.get();
+           actualUser.setFirstName(user.getFirstName());
+           actualUser.setLastName(user.getLastName());
+           actualUser.setEmail(user.getEmail());
+           return userRepository.save(actualUser);
+       } else {
+           throw new NoUserFoundException(HttpStatus.NOT_FOUND, "no user found to update");
+       }
+    }
+
 }
