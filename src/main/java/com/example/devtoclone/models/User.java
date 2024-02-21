@@ -30,7 +30,7 @@ public class User {
 
     @OneToMany
     private List<Article> articles;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Follower> followers;
     @OneToMany(cascade = CascadeType.ALL)
     private List<SocialUrl> socialUrls;
