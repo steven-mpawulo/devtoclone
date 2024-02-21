@@ -32,7 +32,7 @@ public class User {
     private List<Article> articles;
     @OneToMany
     private List<Follower> followers;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<SocialUrl> socialUrls;
     @OneToMany
     private List<Skill> skills;

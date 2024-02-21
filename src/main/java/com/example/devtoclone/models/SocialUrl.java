@@ -1,5 +1,6 @@
 package com.example.devtoclone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +18,8 @@ public class SocialUrl {
         this.content = content;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private User user;
     private String content;
 
