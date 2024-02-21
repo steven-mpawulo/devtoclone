@@ -57,7 +57,11 @@ public class ArticleController {
 
                     );
 
-            return articleRepository.save(article);
+            Article savedArticle = articleRepository.save(article);
+            List<Article> oldUserArticles = actualUser.getArticles();
+            oldUserArticles.add(savedArticle);
+            userRepository.save(actualUser);
+            return savedArticle;
 
         } else {
             throw new FailedToCreateArticleException(HttpStatus.FAILED_DEPENDENCY, "no user found to create article");

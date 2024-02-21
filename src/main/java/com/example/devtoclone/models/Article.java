@@ -1,5 +1,6 @@
 package com.example.devtoclone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -43,6 +44,7 @@ public class Article {
     private String readTime;
     private boolean isBookmarked;
     @ManyToOne
+    @JsonIgnore
     private User user;
     @OneToMany
     private List<Comment> comments;
