@@ -16,10 +16,8 @@ public class Article {
 
     protected Article() {}
 
-    public Article(String imageUrl, Date createdOn, Date updatedOn, String title, String content, String readTime, boolean isBookmarked, User user, List<Comment> comments, List<Reaction> reactions) {
+    public Article(String imageUrl, String title, String content, String readTime, boolean isBookmarked, User user, List<Comment> comments, List<Reaction> reactions) {
         this.imageUrl = imageUrl;
-        this.createdOn = createdOn;
-        this.updatedOn = updatedOn;
         this.title = title;
         this.content = content;
         this.readTime = readTime;
