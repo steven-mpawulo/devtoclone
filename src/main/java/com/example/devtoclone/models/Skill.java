@@ -1,5 +1,6 @@
 package com.example.devtoclone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,9 +15,13 @@ public class Skill {
         this.content = content;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private User user;
-    @Column(nullable = false)
+    @Column(
+            nullable = false,
+            unique = true
+    )
     private String content;
 
     public Long getId() {

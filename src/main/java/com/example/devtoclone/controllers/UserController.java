@@ -2,6 +2,7 @@ package com.example.devtoclone.controllers;
 
 import com.example.devtoclone.exception.NoUserFoundException;
 import com.example.devtoclone.models.Follower;
+import com.example.devtoclone.models.Skill;
 import com.example.devtoclone.models.SocialUrl;
 import com.example.devtoclone.models.User;
 import com.example.devtoclone.repositories.UserRepository;
@@ -97,7 +98,26 @@ public class UserController {
                 }
 
         } else {
-            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to follow user because user with provide id not found");
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to follow user because user with provided id not found");
+        }
+    }
+
+    @PutMapping("/users/{userId}/skills")
+    public User addSkills(@PathVariable Long userId, @RequestBody Map<String, Object> jsonData) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User actualUser = user.get();
+            List<String> userProvidedSkills = (List<String>) jsonData.get("content");
+            List<Skill> userSkills = actualUser.getSkills();
+
+            for (String providedSkill : userProvidedSkills) {
+                Skill skill = new Skill(actualUser, providedSkill);
+                userSkills.add(skill);
+            }
+            return userRepository.save(actualUser);
+
+        } else {
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add skills since no user with provided id found");
         }
     }
 
