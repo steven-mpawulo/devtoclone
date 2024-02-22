@@ -12,7 +12,7 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;
 
