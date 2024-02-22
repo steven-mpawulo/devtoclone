@@ -70,7 +70,7 @@ public class UserController {
             }
             return userRepository.save(actualUser);
         } else {
-            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add urls because user with provided url not found");
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add urls because user with provided id does not found");
         }
     }
 
