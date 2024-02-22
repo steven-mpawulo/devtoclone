@@ -1,5 +1,6 @@
 package com.example.devtoclone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,24 +11,33 @@ public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String organizationName;
+    private String name;
     @OneToMany
+    @JsonIgnore
     private List<User> users;
-
-    public String getOrganizationName() {
-        return organizationName;
-    }
 
     protected Organization() {
     }
 
-    public Organization(String organizationName, List<User> users) {
-        this.organizationName = organizationName;
+    public Organization(String name, List<User> users) {
+        this.name = name;
         this.users = users;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String organizationName) {
+        this.name = organizationName;
     }
 
     public List<User> getUsers() {

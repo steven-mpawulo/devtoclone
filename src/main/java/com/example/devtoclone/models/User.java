@@ -1,5 +1,6 @@
 package com.example.devtoclone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -47,6 +48,11 @@ public class User {
     @CreationTimestamp
     private Date createdOn;
 
+    @UpdateTimestamp
+    private Date updatedOn;
+
+
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -55,8 +61,7 @@ public class User {
         this.comments = comments;
     }
 
-    @UpdateTimestamp
-    private Date updatedOn;
+
 
     protected User() {
     }

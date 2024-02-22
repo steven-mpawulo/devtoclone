@@ -2,6 +2,7 @@ package com.example.devtoclone.controllers;
 
 import com.example.devtoclone.exception.NoUserFoundException;
 import com.example.devtoclone.models.*;
+import com.example.devtoclone.repositories.OrganizationRepository;
 import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @GetMapping("/users")
     public List<User> getUsers() {
@@ -141,6 +144,33 @@ public class UserController {
 
         } else {
             throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add skills user is learning ");
+        }
+    }
+
+    @PutMapping("/users/{userId}/organization")
+    public User joinOrganization(@PathVariable Long userId, @RequestBody Map<String, Object> jsonData) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User actualUser = user.get();
+            List<Organization> organizationsUserIsIn = actualUser.getOrganizations();
+           int organizationIdInt = (int) jsonData.get("organizationId");
+            Long organizationId = (long) organizationIdInt;
+            Optional<Organization> organization = organizationRepository.findById(organizationId);
+            if (organization.isPresent()) {
+                Organization actualOrganization = organization.get();
+                List<User> usersInOrganization = actualOrganization.getUsers();
+                usersInOrganization.add(actualUser);
+                organizationsUserIsIn.add(actualOrganization);
+                organizationRepository.save(actualOrganization);
+                return userRepository.save(actualUser);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "failed to add user since organization is not found");
+            }
+
+
+
+        } else {
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add user to organization since user does not exist");
         }
     }
 
