@@ -39,7 +39,7 @@ public class User {
     private List<Skill> skills;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Learning> learningList;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Badge> badges;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Organization> organizations;

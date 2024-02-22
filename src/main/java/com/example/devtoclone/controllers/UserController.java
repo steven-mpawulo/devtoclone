@@ -166,12 +166,25 @@ public class UserController {
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "failed to add user since organization is not found");
             }
-
-
-
         } else {
             throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add user to organization since user does not exist");
         }
+    }
+
+    @PutMapping("/users/{userId}/badges")
+    public User addBadge(@PathVariable Long userId, @RequestBody Map<String, Object> jsonData) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User actualUser = user.get();
+            List<Badge> userBadges = actualUser.getBadges();
+            String content = (String) jsonData.get("content");
+            Badge badge = new Badge(actualUser, content);
+            userBadges.add(badge);
+            return userRepository.save(actualUser);
+        } else {
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add badge since user with provided id is not found");
+        }
+
     }
 
 }
