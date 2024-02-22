@@ -36,7 +36,7 @@ public class User {
     private List<SocialUrl> socialUrls;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Skill> skills;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Learning> learningList;
     @OneToMany
     private List<Badge> badges;

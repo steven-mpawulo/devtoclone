@@ -1,10 +1,7 @@
 package com.example.devtoclone.controllers;
 
 import com.example.devtoclone.exception.NoUserFoundException;
-import com.example.devtoclone.models.Follower;
-import com.example.devtoclone.models.Skill;
-import com.example.devtoclone.models.SocialUrl;
-import com.example.devtoclone.models.User;
+import com.example.devtoclone.models.*;
 import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -128,14 +125,23 @@ public class UserController {
         }
     }
 
-//    @PutMapping("/users/{userId}/learning")
-//    public User addSkillsUserIsLearning(@PathVariable Long userId, @RequestBody Map<String, Object> jsonData) {
-//        Optional<User> user = userRepository.findById(userId);
-//        if (user.isPresent()) {
-//
-//        } else {
-//            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add skills user is learning ")
-//        }
-//    }
+    @PutMapping("/users/{userId}/learning")
+    public User addSkillsUserIsLearning(@PathVariable Long userId, @RequestBody Map<String, Object> jsonData) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            User actualUser  = user.get();
+        List<String> learning = (List<String>) jsonData.get("content");
+        List<Learning> userLearnings = actualUser.getLearningList();
+
+        for (String userSkill: learning) {
+            Learning userLearning = new Learning(actualUser, userSkill);
+            userLearnings.add(userLearning);
+        }
+        return userRepository.save(actualUser);
+
+        } else {
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add skills user is learning ");
+        }
+    }
 
 }
