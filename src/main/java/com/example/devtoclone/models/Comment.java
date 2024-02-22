@@ -2,6 +2,10 @@ package com.example.devtoclone.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 
 @Entity
 @Table(schema = "public")
@@ -9,6 +13,36 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Article article;
+    @Column(nullable = false)
+    private String content;
+    @CreationTimestamp
+    private Date createdOn;
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    @UpdateTimestamp
+    private Date updatedOn;
 
     protected Comment() {}
 
@@ -50,14 +84,6 @@ public class Comment {
         this.content = content;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Article article;
-    @Column(nullable = false)
-    private String content;
 
 }

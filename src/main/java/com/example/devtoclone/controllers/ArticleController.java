@@ -8,6 +8,7 @@ import com.example.devtoclone.models.Comment;
 import com.example.devtoclone.models.Reaction;
 import com.example.devtoclone.models.User;
 import com.example.devtoclone.repositories.ArticleRepository;
+import com.example.devtoclone.repositories.CommentRepository;
 import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ public class ArticleController {
     private ArticleRepository articleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CommentRepository commentRepository;
     @GetMapping("/articles")
     public List<Article> getArticles() {
         return articleRepository.findAll();
@@ -125,6 +128,16 @@ public class ArticleController {
             return articleRepository.save(actualArticle);
         } else {
             throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to update bookmark since article with provided id not found");
+        }
+    }
+
+    @GetMapping("articles/{articleId}/comments")
+    public List<Comment> getArticleComments(@PathVariable Long articleId) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        if (article.isPresent()) {
+            return commentRepository.findAllByArticle_IdOrderByCreatedOnDesc(articleId);
+        } else {
+            throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to retrieve article comments since article with provided is does not exist");
         }
     }
 }
