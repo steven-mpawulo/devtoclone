@@ -22,7 +22,9 @@ public class Learning {
     @JsonIgnore
     private User user;
 
-    @Column(nullable = false)
+    @Column(
+            nullable = false,
+            unique = true)
     private String content;
 
     public long getId() {
