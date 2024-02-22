@@ -80,22 +80,29 @@ public class UserController {
         if(user.isPresent()) {
                 int userToFollowIntId = (int) jsonData.get("userId");
                 Long userToFollowId = (long) userToFollowIntId;
-                Optional<User> userToFollow = userRepository.findById(userToFollowId);
-                if (userToFollow.isPresent()) {
-                    User actualUser = user.get();
-                    User actualUserGoingToFollow = userToFollow.get();
-                    List<Follower> userFollowers = actualUserGoingToFollow.getFollowers();
-                    Follower follower = new Follower(actualUser);
-                    if (userFollowers.contains(follower)) {
-                        throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY, "already following");
-                    } else {
-                        userFollowers.add(follower);
-                        return userRepository.save(actualUser);
-                    }
+
+                if (userId.equals(userToFollowId)) {
+                    throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY, "you can not follow yourself");
 
                 } else {
-                    throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to follow since user with provided id does not exist");
+                    Optional<User> userToFollow = userRepository.findById(userToFollowId);
+                    if (userToFollow.isPresent()) {
+                        User actualUser = user.get();
+                        User actualUserGoingToFollow = userToFollow.get();
+                        List<Follower> userFollowers = actualUserGoingToFollow.getFollowers();
+                        Follower follower = new Follower(actualUser);
+                        if (userFollowers.contains(follower)) {
+                            throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY, "already following");
+                        } else {
+                            userFollowers.add(follower);
+                            return userRepository.save(actualUser);
+                        }
+
+                    } else {
+                        throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to follow since user with provided id does not exist");
+                    }
                 }
+
 
         } else {
             throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to follow user because user with provided id not found");
@@ -120,5 +127,15 @@ public class UserController {
             throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add skills since no user with provided id found");
         }
     }
+
+//    @PutMapping("/users/{userId}/learning")
+//    public User addSkillsUserIsLearning(@PathVariable Long userId, @RequestBody Map<String, Object> jsonData) {
+//        Optional<User> user = userRepository.findById(userId);
+//        if (user.isPresent()) {
+//
+//        } else {
+//            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add skills user is learning ")
+//        }
+//    }
 
 }
