@@ -112,6 +112,19 @@ public class ArticleController {
         } else {
             throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to react on article because article with provided id not found");
         }
+    }
 
+    @PutMapping("/articles/{articleId}/bookmark")
+    public Article changeBookmark(@PathVariable Long articleId){
+        Optional<Article> article = articleRepository.findById(articleId);
+        if (article.isPresent()) {
+            Article actualArticle = article.get();
+            boolean articleBookmark = actualArticle.isBookmarked();
+            boolean newArticleBookmark = !articleBookmark;
+            actualArticle.setBookmarked(newArticleBookmark);
+            return articleRepository.save(actualArticle);
+        } else {
+            throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to update bookmark since article with provided id not found");
+        }
     }
 }
