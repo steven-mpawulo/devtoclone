@@ -13,6 +13,7 @@ import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,30 @@ public class ArticleController {
 
         } else {
             throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "no article found to update");
+        }
+    }
+
+    @PutMapping("/articles/{articleId}/comments/{commentId}/like")
+    public Article likeArticleComment(@PathVariable Long articleId, @PathVariable Long commentId) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        if (article.isPresent()) {
+            Article actualArticle = article.get();
+           Optional<Comment> comment = commentRepository.findById(commentId);
+           if (comment.isPresent()) {
+               Comment actualComment = comment.get();
+               int oldLikes = actualComment.getLikes();
+               int newLikes = oldLikes + 1;
+               actualComment.setLikes(newLikes);
+               commentRepository.save(actualComment);
+               return actualArticle;
+
+           } else {
+               throw new ResponseStatusException(HttpStatus.NOT_FOUND, "failed to like comment since comment with provided id not found");
+           }
+
+
+        } else {
+            throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to like article since article with provided id does not exist");
         }
     }
 
