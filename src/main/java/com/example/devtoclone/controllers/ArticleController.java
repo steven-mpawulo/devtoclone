@@ -79,13 +79,14 @@ public class ArticleController {
         if (article.isPresent()) {
             Article actualArticle = article.get();
             String content = (String) jsonData.get("content");
+            int likes = (int) jsonData.get("likes");
             int userIdInt = (int) jsonData.get("userId");
             Long userId = (long) userIdInt;
             Optional<User> userAddingComment = userRepository.findById(userId);
             if (userAddingComment.isPresent()) {
                 User user = userAddingComment.get();
                 List<Comment> articleComments = actualArticle.getComments();
-                Comment comment = new Comment(user, actualArticle, content);
+                Comment comment = new Comment(user, actualArticle, content, likes);
                 articleComments.add(comment);
                 List<Comment> userComments = user.getComments();
                 userComments.add(comment);

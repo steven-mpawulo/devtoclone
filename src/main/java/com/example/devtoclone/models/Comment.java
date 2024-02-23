@@ -22,8 +22,12 @@ public class Comment {
     private Article article;
     @Column(nullable = false)
     private String content;
+    private int likes;
     @CreationTimestamp
     private Date createdOn;
+
+    @UpdateTimestamp
+    private Date updatedOn;
 
     public Date getCreatedOn() {
         return createdOn;
@@ -41,15 +45,15 @@ public class Comment {
         this.updatedOn = updatedOn;
     }
 
-    @UpdateTimestamp
-    private Date updatedOn;
+
 
     protected Comment() {}
 
-    public Comment(User user, Article article, String content) {
+    public Comment(User user, Article article, String content, int likes) {
         this.user = user;
         this.article = article;
         this.content = content;
+        this.likes = likes;
     }
 
     public Long getId() {
@@ -82,6 +86,13 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
 
