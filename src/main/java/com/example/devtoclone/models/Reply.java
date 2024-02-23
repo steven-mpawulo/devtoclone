@@ -26,6 +26,7 @@ public class Reply {
     @JsonIgnore
     private Comment comment;
 
+    @Column(nullable = false)
     private String content;
 
     public Long getId() {

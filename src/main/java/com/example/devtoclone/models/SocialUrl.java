@@ -21,6 +21,7 @@ public class SocialUrl {
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User user;
+    @Column(nullable = false)
     private String content;
 
     public Long getId() {
