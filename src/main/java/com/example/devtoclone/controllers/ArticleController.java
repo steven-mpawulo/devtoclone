@@ -79,8 +79,8 @@ public class ArticleController {
             String content = (String) jsonData.get("content");
             int likes = (int) jsonData.get("likes");
             int userIdInt = (int) jsonData.get("userId");
-            List<Reply> replies = (List<Reply>) jsonData.get("replies");
             Long userId = (long) userIdInt;
+            List<Reply> replies = (List<Reply>) jsonData.get("replies");
             Optional<User> userAddingComment = userRepository.findById(userId);
             if (userAddingComment.isPresent()) {
                 User user = userAddingComment.get();
@@ -122,6 +122,40 @@ public class ArticleController {
 
         } else {
             throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to like article since article with provided id does not exist");
+        }
+    }
+
+    @PutMapping("/articles/{articleId}/comment/{commentId}/reply")
+    public Article replyToComment(@PathVariable Long articleId, @PathVariable Long commentId, @RequestBody Map<String, Object> jsonData) {
+        int userIdInt = (int) jsonData.get("userId");
+        Long userId = (long) userIdInt;
+        String content= (String) jsonData.get("content");
+        Optional<Article> article = articleRepository.findById(articleId);
+        if (article.isPresent()) {
+            Article actualArticle = article.get();
+            Optional<User> user = userRepository.findById(userId);
+            if (user.isPresent()) {
+                User actualUser = user.get();
+                Optional<Comment> comment = commentRepository.findById(commentId);
+                if (comment.isPresent()) {
+                    Comment actualComment = comment.get();
+                    List<Reply> commentReplies = actualComment.getReplies();
+                    List<Reply> userReplies = actualUser.getReplies();
+                    Reply reply = new Reply(actualUser, actualComment, content);
+                    commentReplies.add(reply);
+                    userReplies.add(reply);
+                    userRepository.save(actualUser);
+                    commentRepository.save(actualComment);
+                    return actualArticle;
+                } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "failed to add reply since comment with id is not found");
+                }
+            } else {
+                throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to add reply");
+            }
+        } else {
+            throw new NoArticleFoundException(HttpStatus.NOT_FOUND, "failed to reply comment");
+
         }
     }
 

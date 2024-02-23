@@ -45,7 +45,7 @@ public class User {
     private List<Organization> organizations;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Reply> replies;
     @CreationTimestamp
     private Date createdOn;
