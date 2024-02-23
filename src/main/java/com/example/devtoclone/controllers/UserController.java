@@ -2,10 +2,7 @@ package com.example.devtoclone.controllers;
 
 import com.example.devtoclone.exception.NoUserFoundException;
 import com.example.devtoclone.models.*;
-import com.example.devtoclone.repositories.ArticleRepository;
-import com.example.devtoclone.repositories.CommentRepository;
-import com.example.devtoclone.repositories.OrganizationRepository;
-import com.example.devtoclone.repositories.UserRepository;
+import com.example.devtoclone.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -27,6 +24,9 @@ public class UserController {
     private CommentRepository commentRepository;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private FollowerRepository followerRepository;
+
 
     @GetMapping("/users")
     public List<User> getUsers() {
@@ -213,7 +213,13 @@ public class UserController {
             throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to fetch number of comments since user with provided id not found");
         }
         }
-
-
-
+    @GetMapping("/users/{userId}/numberOfFollowers")
+    public int getNumberOfFollowers(@PathVariable Long userId) {
+    Optional<User> user = userRepository.findById(userId);
+    if (user.isPresent()) {
+        return followerRepository.countFollowerByUserId(userId);
+    } else {
+    throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to get number of user followers since user with provided id not found");
+    }
+    }
 }
