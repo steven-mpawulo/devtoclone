@@ -204,6 +204,16 @@ public class UserController {
 
     }
 
+    @GetMapping("/users/{userId}/numberOfComments")
+        public int getNumberOfComments(@PathVariable Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return commentRepository.countCommentByUserId(userId);
+        } else {
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to fetch number of comments since user with provided id not found");
+        }
+        }
+
 
 
 }
