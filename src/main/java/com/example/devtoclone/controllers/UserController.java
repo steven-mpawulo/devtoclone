@@ -88,8 +88,8 @@ public class UserController {
                     Optional<User> userToFollow = userRepository.findById(userToFollowId);
                     if (userToFollow.isPresent()) {
                         User actualUser = user.get();
-                        User actualUserGoingToFollow = userToFollow.get();
-                        List<Follower> userFollowers = actualUserGoingToFollow.getFollowers();
+                        User actualUserGoingToBeFollowed = userToFollow.get();
+                        List<Follower> userFollowers = actualUserGoingToBeFollowed.getFollowers();
                         Follower follower = new Follower(actualUser);
                         if (userFollowers.contains(follower)) {
                             throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY, "already following");
