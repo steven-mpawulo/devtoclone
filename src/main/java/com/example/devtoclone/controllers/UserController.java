@@ -2,6 +2,8 @@ package com.example.devtoclone.controllers;
 
 import com.example.devtoclone.exception.NoUserFoundException;
 import com.example.devtoclone.models.*;
+import com.example.devtoclone.repositories.ArticleRepository;
+import com.example.devtoclone.repositories.CommentRepository;
 import com.example.devtoclone.repositories.OrganizationRepository;
 import com.example.devtoclone.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,10 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private OrganizationRepository organizationRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @GetMapping("/users")
     public List<User> getUsers() {
@@ -186,5 +192,18 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/users/{userId}/numberOfArticles")
+    public int getNumberOfArticles(@PathVariable Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return articleRepository.countAllByUserId(userId);
+        } else {
+            throw new NoUserFoundException(HttpStatus.NOT_FOUND, "failed to fetch number of articles since user with provided id not found");
+        }
+
+    }
+
+
 
 }
