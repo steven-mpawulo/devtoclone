@@ -3,10 +3,7 @@ package com.example.devtoclone.controllers;
 import com.example.devtoclone.exception.FailedToCreateArticleException;
 import com.example.devtoclone.exception.NoArticleFoundException;
 import com.example.devtoclone.exception.NoUserFoundException;
-import com.example.devtoclone.models.Article;
-import com.example.devtoclone.models.Comment;
-import com.example.devtoclone.models.Reaction;
-import com.example.devtoclone.models.User;
+import com.example.devtoclone.models.*;
 import com.example.devtoclone.repositories.ArticleRepository;
 import com.example.devtoclone.repositories.CommentRepository;
 import com.example.devtoclone.repositories.UserRepository;
@@ -82,12 +79,13 @@ public class ArticleController {
             String content = (String) jsonData.get("content");
             int likes = (int) jsonData.get("likes");
             int userIdInt = (int) jsonData.get("userId");
+            List<Reply> replies = (List<Reply>) jsonData.get("replies");
             Long userId = (long) userIdInt;
             Optional<User> userAddingComment = userRepository.findById(userId);
             if (userAddingComment.isPresent()) {
                 User user = userAddingComment.get();
                 List<Comment> articleComments = actualArticle.getComments();
-                Comment comment = new Comment(user, actualArticle, content, likes);
+                Comment comment = new Comment(user, actualArticle, content, likes, replies);
                 articleComments.add(comment);
                 List<Comment> userComments = user.getComments();
                 userComments.add(comment);

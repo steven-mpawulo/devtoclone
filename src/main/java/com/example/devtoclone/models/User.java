@@ -45,6 +45,8 @@ public class User {
     private List<Organization> organizations;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments;
+    @OneToMany
+    private List<Reply> replies;
     @CreationTimestamp
     private Date createdOn;
 
@@ -66,7 +68,7 @@ public class User {
     protected User() {
     }
 
-    public User(String firstName, String lastName, String email, String profilePicUrl, String location, String education, String briefDescription, String work, List<Article> articles, List<Follower> followers, List<SocialUrl> socialUrls, List<Skill> skills, List<Learning> learningList, List<Badge> badges, List<Organization> organizations, Date createdOn, Date updatedOn) {
+    public User(String firstName, String lastName, String email, String profilePicUrl, String location, String education, String briefDescription, String work, List<Article> articles, List<Follower> followers, List<SocialUrl> socialUrls, List<Skill> skills, List<Learning> learningList, List<Badge> badges, List<Organization> organizations, Date createdOn, Date updatedOn, List<Reply> replies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -84,6 +86,7 @@ public class User {
         this.organizations = organizations;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
+        this.replies = replies;
     }
 
     public Long getId() {
@@ -228,6 +231,13 @@ public class User {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 
     @Override

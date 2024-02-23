@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "public")
@@ -23,6 +24,8 @@ public class Comment {
     @Column(nullable = false)
     private String content;
     private int likes;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Reply> replies;
     @CreationTimestamp
     private Date createdOn;
 
@@ -49,11 +52,12 @@ public class Comment {
 
     protected Comment() {}
 
-    public Comment(User user, Article article, String content, int likes) {
+    public Comment(User user, Article article, String content, int likes, List<Reply> replies) {
         this.user = user;
         this.article = article;
         this.content = content;
         this.likes = likes;
+        this.replies = replies;
     }
 
     public Long getId() {
@@ -93,6 +97,13 @@ public class Comment {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 
 
